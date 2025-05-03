@@ -10,6 +10,14 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Dancing+Script&display=swap" rel="stylesheet">
+    <style>
+        canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            z-index: -1;
+        }
+    </style>
 </head>
 <body>
     <div id="drag-container">
@@ -24,33 +32,31 @@
             <img src="8.jpg" alt="">
             <img src="9.jpg" alt="">
             <img src="10.jpg" alt="">
-            <p>Happy Birthday CHOTKI</p>
+            <p>Happy Birthday Chotki</p>
         </div>
         <div id="ground"></div>
     </div>
-    
-    <div id="music-container"></div>
-    <!-- <div id="canva">
-        <canvas id="canvas"></canvas>
-    </div> -->
 
-    <!-- Audio tự động phát -->
-    <audio id="myAudio" autoplay playsinline>
-        <source src="music/setlove.mp3" type="audio/mpeg">
-        <source src="music/setlove.ogg" type="audio/ogg">
+    <canvas id="canvas"></canvas>
+
+    <audio id="myAudio">
+        <source src="love_music_setlove.mp3" type="audio/mpeg">
+        Your browser does not support the audio element.
     </audio>
 
     <script src="main.js"></script>
 
     <script>
-        window.onload = function() {
-            var audio = document.getElementById("myAudio");
-            audio.muted = false;
-            audio.play().catch(function(e) {
-                console.log('Audio playback failed:', e);
-            });
+        window.onload = function () {
+            // Allow audio to start after user click
+            document.body.addEventListener('click', function () {
+                var audio = document.getElementById("myAudio");
+                audio.play().catch(function (e) {
+                    console.log("Autoplay blocked:", e);
+                });
+            }, { once: true });
 
-            // Hiệu ứng pháo hoa và trái tim
+            // Fireworks and hearts
             const canvas = document.getElementById("canvas");
             const ctx = canvas.getContext("2d");
             canvas.width = window.innerWidth;
@@ -123,21 +129,18 @@
                 fireworks.forEach((firework, index) => {
                     firework.draw();
                     firework.update();
-                    if (firework.life <= 0) {
-                        fireworks.splice(index, 1);
-                    }
+                    if (firework.life <= 0) fireworks.splice(index, 1);
                 });
 
                 hearts.forEach((heart, index) => {
                     heart.draw();
                     heart.update();
-                    if (heart.opacity <= 0) {
-                        hearts.splice(index, 1);
-                    }
+                    if (heart.opacity <= 0) hearts.splice(index, 1);
                 });
 
                 requestAnimationFrame(animate);
             }
+
             animate();
         };
     </script>
